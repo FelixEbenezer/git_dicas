@@ -1,0 +1,286 @@
+1. GIT CONFIGURATION
+
+git config --global user.name 'oseuusername'
+git config --global user.email 'seuemail'
+
+#on peut meme le voir en faisant
+git config --global user.name
+
+#POUR INITIALISER LE GIT
+git init 
+
+#ADICIONAR AO STAGE
+git add .
+
+$PARA COMMMITAR
+git commit -m 'texte'
+
+#PARA VER DIFERENTES COMMIT
+git log 
+
+#BRANCHES
+==Pour voir les branches
+git branch
+
+== criaacao 
+git branch nomdubranch
+
+== mudar de branch
+git checkout nomdubranch
+
+#Si on ajoute des files dans cette nova branch par exemple en faisant:
+git add --all
+git commit -m 'adknfkd'
+
+
+#Si on fait git checkout main, donc pour changer de branch, dans ton pasta de ficheiros, somente os ficheiros ligados ao branch main
+serão visiveis, todos os ooutros files de outros branches serao ocultos.
+cad somente são apresentados ou affichés files ligados ao branch onde está.
+A NAO SER QUE SE FAÇA MERGE
+
+
+====MERGE: consiste a fusionner les fichiers d un branch avec un autre
+a) Merge sem conflitos
+
+- on se place dans la branch ou on souhaite transferer les files et on fait:
+git merge 'nomdubranchorigin'
+
+- pour eliminer um branch dont on a plus besoin
+git branch -d 'nombbranch'
+
+b) Merge com conflitos
+Isso acontece quando o mesmo file ou dossier partilhado em ambos os branches sofrem diferentes alteracoes antes de merge.
+Relembrando que toda a vez que se cria um novo branch, ele tem todos os files do branch master se ele foi criado a partir do master.
+Entao uma vez que nosso file foi alterado diferentemente em branches differentes, se tentar fazer merge, dara erro ou aviso de CONFLICT
+que deve ser resolvido ou abortado antes de continuar.
+
+- se fizer git merge --abort, o processo de merge sera cancelado e os files vao guardar suas aleracaoes segundo o seu branch
+- se quiser continuar o branch, então deve resolver o branch, e para resolver o branch, faz se git diff ou git log para ver as
+differeças em termos de alteracaoes entre o tal file ou dossier, e poder eliminar uma ou outra alteracao selon un branch ou outro e 
+depois fazer o git add --all et git commit -m 'ddd' et apres prosseguir com o merge.
+
+
+
+=================DESFANDO AS ACOES 
+
+1. DESFAZENDO ANTES DO COMMIT 
+
+- si on veut annuler les alterations avant de faire git add ., on fait donc
+git checkout nomefile
+
+- si on doit annuler avant le commit, cad on a deja fait le git add ., on fait:
+git restore --stage nomDuFichier
+
+DONC git checkout file pour annuler dans la position de git add et le file volta no seu estado antes de add;
+ et git restore --stage file avant de faire le commit et le file volta no estado de git add .
+
+
+
+2. DESFANDO COMMIT
+
+#pour voir les differents commits faits avec leur id et branch associés:
+git log --oneline
+
+a) Annuler la derniere commit avec la methode SOFT
+fit reset --soft HEAD~
+#este comando annula o ultimo commit feito e ponhe em estado de antes o commit o file que estava associado a este commit
+cad se fizer mais git commit -m, o mesmo file voltara no estado commit
+
+Alias, se fize mais git log --oneline, ve se que o ultimo commit assumiu e que a linha Head está no penultimo commit feito.
+
+b) avec la methode MIXED
+git reset --mixed HEAD~
+
+La difference avec la methode SOFT é que aqui o file volta no estado antes de git add, querendo dizer se quiser le commitar deve primeiro
+refazer git add --all e depois git commit -m 'skm'
+
+D´ailleurs on peut le voir en faisant Git Status
+
+C) avec la methode HARD
+git reset --hard HEAD~
+Este metodo simplismente descarta todas as alteracaoes feitas ao file que foi commitado, ele nem sequer volta ao estado antes commit 
+ou antes git add. Ele apaga tudo que tem a ver com o ultimo commit.
+E por isso trata se de uma operacoes cuidadosa.
+
+
+d) On peut voltar direitinho a um commit usando o seu id (pegado e visto quando se faz git log --oneline)
+git reset --soft idDoCommit
+
+
+
+==================2) GIT ET GITHUB =================================================
+A)
+
+git init
+git add --all
+git commit -m 'dfdfdf'
+#Envio ao pasta remote no github
+git remote add origin https://github.com/FelixEbenezer/Classification-textuelle.git
+git push --set-upstream origin main (main ou master depende du nom de votre branch master)
+
+
+B) PEGANDO MUDANÇAS FEITAS NO REMOTE para o repositorio Local: FETCH
+
+- d abord on souhaite voir les modifications faites dans remote repositorio
+git log origin/main (ou master), si on ajoute pas origin/main, sera affiché le log de repositorio local
+
+- On peut aussi le faire avec git diff origin/main
+
+- Une fois qu on a detecté les modifications faites en remote et qu on veuille les emmener en repositorio local, on fait
+git fetch origin
+git merge origin/main
+
+E JA ESTÁ, on peut meme verifier son repositorio local do projeto e on verra qu il y a bien les modifications faites en remote.
+
+
+============OU, si on ne voulait pas faire git fetch et git merge, on peut simplement le faire en une ligne qui est PULL
+git pull origin 
+
+
+
+
+C) CREER UNE BRANCH REMOTE
+
+dans github, on crée un novo branch, logicamente esse novo branch tera todo o conteudo do master.
+Então assimulamos algumas mudanças dos files em novo branch.
+Si on souhaite que essas mudanças seja tambem visiveis ou aparecem no master devemos fazer o merge ou simplemente clicar no github
+na opcao:
+Create pull request
+
+- On peut aussi voir les differentes alteracoes clicando no history.
+
+
+D) TRAZENDO A NOVA BRANCH CRIADO NO REMOTE PARA O LOCAL
+
+on fait d abord:
+- git pull (pour ramener les modifications de remote en local)
+- git branch -r (pour voir les branches de remote, git branch simplement montre les branches en local)
+on peut donc voir touts les branches do remote
+
+
+- git branch -a #Montre toutes les branches tanto local como remote
+
+PARA ACESSAR QUALQUER BRANCH, o metodo não mudou:
+-git checkout nomDuBranch   #peu importe que ce soit en remote ou local
+
+On peut le confirmer d ailleurs en faisant:
+- git branch
+
+
+E) CRIAR UMA BRANCH LOCAL E LHE ENVIAR NO REMOTE
+
+- git checkout -b novabranch2   #Ele cria e acessa direitinho a nova branch criada, comme d habit, ele vem ja com toda a copia do master local
+- on fait nos git add et commit si necessaire, et pour l envoyer en git remote on fait:
+- git push origin novabranch2
+
+Apres si on veut integrer les alterations de novabranch2 no master remote, on a qu a  cliquer sur compare and pull request, commit 
+et apres merge pull request, confirm merge ,tout ça directement sur github
+
+
+F) CRIANDO UN FORK
+
+Fork faz copia du repositorio github para um outro githib.
+Exemple: t es sur un github d un autre et tu souhaites transferer ou copier un de ses projets/repositorio para seu github, para isso:
+- segure se estar logado na tua conta github
+- ir sur le compte de l autre, et choisir le reposition en question clicquant dessus
+- fork
+- en en plus tu verras que ce repositorio foi transferido para seu conta.
+CUIDADO, um repositorio forked ne peut pas changer de status de Public a private. donc il sera toujours public.
+
+
+
+F) CRIAR CLONE
+Clone est le fait de pegar um repositiorio remote et de le transferer en local.
+Ca peut etre n importe quel repositorio meme forked.
+l idée est tipo de pegar um projeto online et de travailler en off la dessus.
+para isso, ir ao projeto em question no github, dar clicque no code/clone, e copiar o link do mesmo
+
+No seu terminal ou git fazer:
+
+- git clone https://github.com/FelixEbenezer/SuperSexPredicter.git nomeDaPastaLocalAColarOProjeto
+Et on a qu a voir le projet dans la pasta indiquée.
+
+
+* Si on souhaite voir les liens de fetch ou push de nos github, on fait:
+- git remote -v
+
+
+H) GITIGNORE
+
+
+J) AUTENTICACAO SSH
+
+OBS: JE CONSEILLE D EXECUTER LES COMMANDES SUIVANTES DANS gitbash au lieu de terminal de la ligne de commande
+
+E mais complexo mas mais protecao mesmo se a PK(senha) for perdida.
+Até agora usamos o protocolo Https onde para acessar sua conta github, tivemos que usar email e senha de sua conta.
+o SSH é um protocolo mais seguro. e o que vamos ver agora.
+
+Processo para estabelecer a autenticacao SSH
+
+- geração de par de chaves
+- Adicao chave privada localmente
+- adicao chave publica remotamente
+- geracao remote para uso com SSH
+
+CONFIGURACAO SSH
+
+- ir no repositorio home do seu ambiente de trabalho e criar a pasta .ssh
+c:/utilizadores/felix .ssh
+
+- abrir o seu terminal a partir desta pasta .ssh e digitar sgte para criar as chaves 
+ssh-keygen -t rsa -b 4096 -C 'emaildatuacontagithub'
+
+ON PEUT DU COUP voir la geracao de ambas as chaves (Publica/Privada) dentro da nossa pasta .ssh
+
+- on va maintenant initialiser le servidor ssh en digitant:
+eval 'ssh-agent -s' 
+
+- on va maintenant ajouter la chave privada dont le file est id_rsa
+ssh-add id_rsa
+
+- maintenant on va ajouter l autre chave publqie no github
+clip < id_rsa.pub
+
+En faisant cela, vous avez copié indirectement la chave publique, on va sur github, settings, ssh and GPG keys, 
+New SSH key, colar la chave, et donner un nom a ça et apres Add SSh key.
+
+- on va maintenant essayer de s autentifier a notre github en digitant:
+ssh -T git@github.com
+
+Et si tout va bien. tu verras à la derniere ligne du message que Hi seuNome! you ve successfully authenticated, but ...
+
+- Para connectar a um repositorio remoto da sua conta,faz se:
+selectionar o projeto github, clicar no code/clone, ao invez de copiar o link https, copie o link SHH, e depois fazer como temos sempre
+
+git remote add linkSSHdoRepositorio  #E ja está 
+
+
+H) TAGS e RELEASES
+indicam versoes de software
+
+Esses tags são associados aos commit.
+
+***Criar tags 
+
+git tag -a 1.0 -m 'commitando'
+
+Se fizer git log --oneline, on verra que la tag 1.0 esta associado a esta commit. 
+
+***associar uma tag a um commit que nao o tem
+
+git tag -a 1.1 idCommit -m 'commitando'
+
+**para ver todas as tags
+git tag 
+
+
+** Envios de tags para github
+- enviar uma tag especifica
+git push origin 1.2 
+
+- enviar todas as tags
+git push origin --tags
+
+
+E as releases são criadas a partir de tags 
