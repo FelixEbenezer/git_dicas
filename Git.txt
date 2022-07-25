@@ -338,3 +338,16 @@ and the Git operation should be executed with no issues.
 
 Final Thoughts
 In today’s short guide we discussed about the recent changes made on GitHub that now require users to perform token-based authentication as password-based authentication are no longer accepted.
+
+
+
+PROBLEME: error: Your local changes to the following files would be overwritten by merge:
+wp-content/w3tc-config/master.php
+Please, commit your changes or stash them before you can merge.
+
+git reset --hard
+git pull
+
+#link: 
+https://stackoverflow.com/questions/15745045/how-do-i-resolve-git-saying-commit-your-changes-or-stash-them-before-you-can-me
+https://stackoverflow.com/questions/14318234/how-do-i-ignore-an-error-on-git-pull-about-my-local-changes-would-be-overwritt
